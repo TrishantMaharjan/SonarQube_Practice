@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th = "https://www.thymeLeaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Contact Us</title>
+</head>
+<body>
+	<div th:insert="Header.html">
+	</div>
+	<div class = "container-fluid">
+		<form action = "/contact" method = "post">
+			<div class = "row p-2 text-center">
+				<div class = "col-2">Receiver Email</div>
+				<div class = "col-4">
+					<input type = "text" name = "toEmail" class = "form-control">
+				</div>
+			</div>
+			<div class = "row p-2 text-center">
+				<div class = "col-2">Subject</div>
+				<div class = "col-4">
+					<input type = text name = "subject" class = "form-control">
+				</div>
+			</div>
+			<div class = "row p-2 text-center">
+				<div class = "col-2">Message</div>
+				<div class = "col-4">
+					<textarea name = "message" rows="6" cols="34"></textarea>
+				</div>
+			</div>
+			<div class = "row p-2 text-center">
+				<div class = "col-2"></div>
+				<div class = "col-4">
+					<input type = submit value = "send" class = "btn btn-success">
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

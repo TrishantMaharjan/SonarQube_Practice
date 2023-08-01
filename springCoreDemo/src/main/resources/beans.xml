@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="com.di.Student" id="stud">
+    	<constructor-arg value="1234"/>
+    	<constructor-arg value="DummyFname"/>
+    	<constructor-arg value="DummyLname"/>
+    	<constructor-arg value="9876"/>
+    </bean>
+
+</beans>

@@ -27,8 +27,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "TestBuild:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "springCoreDemo/Dockerfile"
+        DOCKER_IMAGE = "TestBuild:7"
         REGISTRY_CREDENTIALS = credentials('DockerHub')
       }
       steps {

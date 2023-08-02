@@ -25,5 +25,21 @@ pipeline {
         }
       }
     }
+    stage('Build and Push Docker Image') {
+      environment {
+        DOCKER_IMAGE = "TestBuild:${BUILD_NUMBER}"
+        // DOCKERFILE_LOCATION = "springCoreDemo/Dockerfile"
+        REGISTRY_CREDENTIALS = credentials('DockerHub')
+      }
+      steps {
+        script {
+            sh 'cd springCoreDemo && docker build -t ${DOCKER_IMAGE} .'
+            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry('https://hub.docker.com/repository/docker/trishantmaharjan/jenkins_practice_repo/', "DockerHub") {
+                dockerImage.push()
+            }
+        }
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'maven:3.8.3-openjdk-17'
+      image 'trishantmaharjan/maven-with-docker:firsttry'
     }
   }
   stages {
@@ -10,11 +10,11 @@ pipeline {
         sh 'echo passed'
       }
     }
-    /* stage('Build and Test') {
+    stage('Build and Test') {
       steps {
         sh 'cd springCoreDemo && mvn clean package'
       }
-    } */
+    }
     stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://172.16.147.131:9000/"
@@ -25,9 +25,9 @@ pipeline {
         }
       }
     }
-    /* stage('Build and Push Docker Image') {
+    stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "testbuild:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "trishantmaharjan/maven-with-docker:${BUILD_NUMBER}"
         REGISTRY_CREDENTIALS = credentials('DockerHub')
       }
       steps {
@@ -39,6 +39,6 @@ pipeline {
             }
         }
       }
-    } */
+    }
   }
 }

@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM openjdk:22-jdk-slim
 ARG artifact=target/*.jar
 WORKDIR /opt/app
 COPY ${artifact} app.jar

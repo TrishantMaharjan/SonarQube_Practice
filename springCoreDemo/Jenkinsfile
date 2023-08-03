@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'trishantmaharjan/maven-with-docker:firsttry'
-    }
-  }
+  agent any
   stages {
     stage('Checkout') {
       steps {
@@ -12,7 +8,9 @@ pipeline {
     }
     stage('Build and Test') {
       steps {
-        sh 'cd springCoreDemo && mvn clean package'
+        withMaven {
+           sh 'cd springCoreDemo && mvn clean package' 
+        }
       }
     }
     stage('Static Code Analysis') {
@@ -21,7 +19,9 @@ pipeline {
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          sh 'cd springCoreDemo && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+          withMaven {
+            sh 'cd springCoreDemo && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+          }
         }
       }
     }

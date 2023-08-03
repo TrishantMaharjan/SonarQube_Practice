@@ -8,9 +8,7 @@ pipeline {
     }
     stage('Build and Test') {
       steps {
-        withMaven {
-           sh 'cd springCoreDemo && mvn clean package' 
-        }
+        sh 'cd springCoreDemo && mvn clean package' 
       }
     }
     stage('Static Code Analysis') {
@@ -19,9 +17,7 @@ pipeline {
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          withMaven {
-            sh 'cd springCoreDemo && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
-          }
+          sh 'cd springCoreDemo && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
         }
       }
     }

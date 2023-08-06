@@ -34,9 +34,9 @@ pipeline {
       }
       steps {
         script {
-            sh 'cd springCoreDemo && docker build -t ${DOCKER_IMAGE} .'
-            sh 'docker tag ${DOCKER_IMAGE} $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}'
-            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}'
+            sh 'cd springCoreDemo && docker build -t ${DOCKER_IMAGE}:v1 .'
+            sh 'docker tag ${DOCKER_IMAGE}:v1 $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:v1'
+            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:v1'
         }
       }
     }

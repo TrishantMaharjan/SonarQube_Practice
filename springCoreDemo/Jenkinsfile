@@ -28,7 +28,7 @@ pipeline {
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = 'trishantmaharjan/maven-with-docker'
-        REGISTRY_CREDENTIALS = credentials('DockerHub')
+        REGISTRY_CREDENTIALS = credentials('dockerhub_login')
       }
       steps {
         script {

@@ -27,7 +27,7 @@ pipeline {
     }
     stage('Build Docker Image and push to Harbor') {
       environment {
-        DOCKER_IMAGE = 'trishantmaharjan/maven-with-docker'
+        DOCKER_IMAGE = 'testimage'
         REGISTRY = 'http://172.16.147.131:8081'
         HARBOR_NAMESPACE = 'ks-devops-harbor'
         HARBOR_CREDENTIAL = credentials('harbor_login')
@@ -36,7 +36,7 @@ pipeline {
         script {
             sh 'cd springCoreDemo && docker build -t ${DOCKER_IMAGE} .'
             def dockerImage = docker.image("${DOCKER_IMAGE}")
-            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$dockerImage:devops-test'
+            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/$dockerImage'
         }
       }
     }

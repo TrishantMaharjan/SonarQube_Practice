@@ -29,14 +29,14 @@ pipeline {
       environment {
         DOCKER_IMAGE = 'testimage'
         REGISTRY = 'http://172.16.147.131:8081'
-        HARBOR_NAMESPACE = 'ks-devops-harbor'
+        HARBOR_NAMESPACE = 'testproject'
         HARBOR_CREDENTIAL = credentials('harbor_login')
       }
       steps {
         script {
-            sh 'cd springCoreDemo && docker build -t ${DOCKER_IMAGE} .'
-            def dockerImage = docker.image("${DOCKER_IMAGE}${env.BUILD_NUMBER}")
-            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/${dockerImage}'
+            sh 'cd springCoreDemo && docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} .'
+            sh 'docker tag ${DOCKER_IMAGE}:${env.BUILD_NUMBER} $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
+            sh 'docker push  $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
         }
       }
     }

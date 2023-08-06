@@ -28,7 +28,7 @@ pipeline {
     stage('Build Docker Image and push to Harbor') {
       environment {
         DOCKER_IMAGE = 'testimage'
-        REGISTRY = 'http://registry.f1soft.com:8081'
+        REGISTRY = 'http://172.16.147.131:8081'
         HARBOR_NAMESPACE = 'testproject'
         HARBOR_CREDENTIAL = credentials('harbor_login')
       }

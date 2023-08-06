@@ -30,7 +30,7 @@ pipeline {
         DOCKER_IMAGE = 'testimage'
         REGISTRY = '172.16.147.131:8081'
         HARBOR_NAMESPACE = 'testprojectpublic'
-        HARBOR_CREDENTIAL = credentials('harbot_robot')
+        HARBOR_CREDENTIAL = credentials('harbor_login')
       }
       steps {
         script {

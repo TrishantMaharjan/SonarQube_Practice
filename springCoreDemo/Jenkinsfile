@@ -45,12 +45,17 @@ pipeline {
         }
       }
     }
-    stage('sign the container image') {
+    stage('Sign the container image') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'harbor_login', usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_PASSWORD')]){
                 sh "docker login -u ${env.HARBOR_USERNAME} -p ${env.HARBOR_PASSWORD} ${REGISTRY}"
                 sh "cosign sign --key $COSIGN_PRIVATE_KEY -y $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
         }
+      }
+    }
+    stage('Remove local image') {
+      steps {
+        sh "docker rmi -f $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
       }
     }
   }

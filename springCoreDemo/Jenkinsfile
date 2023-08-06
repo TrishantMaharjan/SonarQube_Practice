@@ -39,8 +39,7 @@ pipeline {
               sh "docker build -t $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER} ."
               sh "docker login -u ${env.HARBOR_USERNAME} -p ${env.HARBOR_PASSWORD}"
               sh "docker push $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-            }
-            
+            } 
           }
         }
       }

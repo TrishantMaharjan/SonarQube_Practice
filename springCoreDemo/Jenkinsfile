@@ -35,6 +35,9 @@ pipeline {
       steps {
         script {
           dir('springCoreDemo') {
+            HARBOR_CREDENTIALS = credentials('harbor_login')
+            HARBOR_USERNAME = "${HARBOR_CREDENTIALS_USR}"
+            HARBOR_PASSWORD = "${HARBOR_CREDENTIALS_PSW}"
             sh "docker build -t $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER} ."
             sh "docker push $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
           }

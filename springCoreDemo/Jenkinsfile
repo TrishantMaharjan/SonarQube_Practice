@@ -4,6 +4,13 @@ pipeline {
       maven 'maven'
       // dockerTool 'Docker'  
     }
+  environment {
+    DOCKER_IMAGE = 'testimage'
+    HARBOR_NAMESPACE = 'testprojectpublic'
+    REGISTRY = '172.16.147.131:8081'
+    COSIGN_PASSWORD=credentials('cosign_password')
+    COSIGN_PRIVATE_KEY=credentials('cosign_private_key')
+  }
   stages {
     stage('Checkout') {
       steps {
@@ -26,23 +33,22 @@ pipeline {
       }
     }
     stage('Build Docker Image and push to Harbor') {
-      environment {
-        DOCKER_IMAGE = 'testimage'
-        REGISTRY = '172.16.147.131:8081'
-        HARBOR_NAMESPACE = 'testprojectpublic'
-        HARBOR_CREDENTIAL = credentials('harbor_login')
-      }
       steps {
         script {
             dir('springCoreDemo') {
-            withCredentials([usernamePassword(credentialsId: 'harbor_login', usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_PASSWORD')]){
               sh "docker build -t $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER} ."
-              sh "docker login -u ${env.HARBOR_USERNAME} -p ${env.HARBOR_PASSWORD} ${REGISTRY}"
-              sh "docker push $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-            } 
-          }
+              withCredentials([usernamePassword(credentialsId: 'harbor_login', usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_PASSWORD')]){
+                sh "docker login -u ${env.HARBOR_USERNAME} -p ${env.HARBOR_PASSWORD} ${REGISTRY}"
+                sh "docker push $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+              } 
+            }
         }
       }
     }
+    stage('sign the container image') {
+      steps {
+        sh 'cosign version'
+        sh "cosign sign --key $COSIGN_PRIVATE_KEY $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+      }
+    }
   }
-}

@@ -34,8 +34,10 @@ pipeline {
       }
       steps {
         script {
-            sh 'cd springCoreDemo && docker build -t $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER} .'
+          dir('springCoreDemo') {
+            sh 'docker build -t $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER} .'
             sh 'docker push $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}'
+          }
         }
       }
     }

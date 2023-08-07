@@ -10,6 +10,7 @@ pipeline {
     REGISTRY = '172.16.147.131:8081'
     COSIGN_PASSWORD=credentials('cosign_password')
     COSIGN_PRIVATE_KEY=credentials('cosign_private_key')
+    COSIGN_PUBLIC_KEY=credentials('cosign_public_key')
   }
   stages {
     stage('Checkout') {
@@ -56,6 +57,11 @@ pipeline {
     stage('Remove local image') {
       steps {
         sh "docker rmi -f $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+      }
+    }
+    stage('Verification of the container image') {
+      steps {
+        sh "cosign verify --key $COSIGN_PUBLIC_KEY $REGISTRY/$HARBOR_NAMESPACE/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
       }
     }
   }
